@@ -4,13 +4,15 @@ from socket import *
 import select
 import struct
 import json
+# 初始化主句柄，用来监听连接
 server = socket(AF_INET, SOCK_STREAM)
 server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 server.bind(('', 8848))
 server.listen(1024)
-
+# 初始化epoll对象
 epoll_obj = select.epoll()
 timeout = 10
+# 将主句柄的文件描述符以及事件注册进epoll对象
 epoll_obj.register(server.fileno(), select.EPOLLIN)
 
 dict_fd_socket ={server.fileno():server}
